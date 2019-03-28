@@ -31,3 +31,34 @@
     transform: rotate(360deg);
   }
 }
+
+.container {
+  display: flex;
+  flex-direction: row;
+  flex: wrap;
+}
+
+.board {
+  border-color: blue;
+  border-width: 3px;
+  border-style: solid;
+  background-color: aqua;
+}
+
+.tile {
+  position: absolute;
+  display: flex;
+  color: red;
+}
+.tile .value {
+  background-color: pink;
+  width: 90%;
+  height: 80%;
+  margin: 10%;
+  position: relative;
+  border-radius: 5px;
+
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
