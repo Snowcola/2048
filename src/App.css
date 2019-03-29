@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "Clear Sans";
+  src: url("./clear-sans.ttf") format("truetype");
+}
+
 .App {
   text-align: center;
 }
@@ -39,26 +44,32 @@
 }
 
 .board {
-  border-color: blue;
-  border-width: 3px;
-  border-style: solid;
-  background-color: aqua;
+  order: 1;
+  background-color: #baa;
+  border-radius: 7px;
+  position: relative;
+  outline: none;
 }
 
-.tile {
+.board .tile {
   position: absolute;
   display: flex;
   color: red;
 }
 .tile .value {
-  background-color: pink;
+  background-color: #dcb;
   width: 90%;
-  height: 80%;
-  margin: 10%;
-  position: relative;
-  border-radius: 5px;
-
-  align-items: center;
-  justify-content: center;
-  display: flex;
+  height: 90%;
+  margin: 5%;
+  border-radius: 7px;
+  font-size: 55px;
+  line-height: 90px;
+  color: #766;
+  font-family: "Clear Sans";
+  display: inline-block;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  cursor: default;
 }
