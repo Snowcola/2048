@@ -3,25 +3,24 @@ import { useSpring, animated } from "react-spring";
 
 export default function Tile(props) {
   const { tileKey, tileSize, tilepadding, row, col, cell } = props;
+  console.log(JSON.stringify(cell));
   return (
     <div
       key={tileKey}
-      className="tile"
+      className='tile'
       style={{
-        top: row * tileSize,
-        left: col * tileSize,
         width: tileSize,
         height: tileSize,
         margin: `${tilepadding}px`
       }}
     >
       <div
-        className="value"
+        className='value'
         style={{
-          backgroundColor: colors[cell]
+          backgroundColor: colors[cell.value]
         }}
       >
-        {cell !== 0 ? cell : ""}
+        {cell.value !== 0 ? cell.value : ""}
       </div>
     </div>
   );
@@ -48,8 +47,8 @@ function AnimatedTile(props) {
     to: { left: "300px", top: "300px" }
   });
   return (
-    <animated.div className="tile" style={style}>
-      <div className="value">10</div>
+    <animated.div className='tile' style={style}>
+      <div className='value'>10</div>
     </animated.div>
   );
 }

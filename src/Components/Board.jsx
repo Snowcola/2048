@@ -5,9 +5,9 @@ import Tile from "./Tile";
 export default function Board(props) {
   const { grid, tileSize, size, tilepadding } = props;
   return (
-    <div className="container">
+    <div className='container'>
       <div
-        className="board"
+        className='board'
         style={{
           position: "relative",
           width: tileSize * size + tilepadding * 2,
@@ -17,7 +17,7 @@ export default function Board(props) {
       >
         {grid.map((row, r) =>
           row.map((cell, c) => (
-            <Tile
+            <AnimatedTile
               key={r + c * Date.now() + 200}
               tileKey={r + c * Date.now()}
               tileSize={tileSize}
@@ -28,30 +28,37 @@ export default function Board(props) {
             />
           ))
         )}
-        <AnimatedTile />
       </div>
     </div>
   );
 }
 
 function AnimatedTile(props) {
+  const cell = props.cell;
+  const { row, col, oldRow, oldCol, merged, newTile } = cell;
+  const size = props.tileSize;
   const style = useSpring({
-    from: { left: "0px", top: "0px" },
-    to: { left: "300px", top: "300px" }
+    from: {
+      left: (cell && !merged ? cell.oldCol : props.col) * size + "px",
+      top: (cell && !merged ? cell.oldRow : props.row) * size + "px"
+    },
+    to: {
+      left: (cell ? cell.col : props.col) * size + "px",
+      top: (cell ? cell.row : props.row) * size + "px"
+    }
   });
+
   return (
     <animated.div
-      className="tile"
+      className='tile'
       style={{
+        zIndex: 10,
         ...style,
-        margin: "5px",
-        width: "100px",
-        height: "100px"
+        width: size,
+        height: size
       }}
     >
-      <div className="value" style={{ backgroundColor: "red" }}>
-        10
-      </div>
+      <Tile {...props} />
     </animated.div>
   );
 }

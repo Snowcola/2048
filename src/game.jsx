@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Mousetrap from "mousetrap";
 
 import Board from "./Components/Board";
-
+import Cell from "./cell";
 import { addRandom, moveLeft } from "./gameLogic";
 import { clone, rotate } from "./utils";
 
@@ -13,7 +13,7 @@ import "./App.css";
 const initial_state = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
 
 export default function Game() {
-  const [grid, setGrid] = useState(addRandom(initial_state, true));
+  const [grid, setGrid] = useState(setup());
   const [old, setOld] = useState([]);
   const size = 4;
   const tileSize = 100;
@@ -32,8 +32,30 @@ export default function Game() {
     };
   });
 
+  function updateCoordinates(matrix) {
+    const temp = clone(matrix);
+
+    for (let row = 0; row < matrix.length; row++) {
+      for (let col = 0; col < temp[row].length; col++) {
+        if (typeof temp[row][col] == "object") {
+          temp[row][col].oldRow = temp[row][col].row;
+          temp[row][col].oldCol = temp[row][col].col;
+          temp[row][col].row = row;
+          temp[row][col].col = col;
+          //console.log(temp[row][col]);
+        }
+      }
+    }
+    console.log("running");
+    return temp;
+  }
+
+  function setup() {
+    return updateCoordinates(addRandom(initial_state, true));
+  }
+
   function reset() {
-    setGrid(addRandom(initial_state, true));
+    setGrid(setup());
     setOld([]);
   }
 
@@ -46,12 +68,13 @@ export default function Game() {
     for (let i = 0; i < dirNum; i++) {
       matrix = rotate(matrix, false);
     }
+    matrix = updateCoordinates(matrix);
     setGrid(matrix);
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className='App'>
+      <header className='App-header'>
         <h1>Grid Test</h1>
 
         <Board
