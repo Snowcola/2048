@@ -1,5 +1,5 @@
 import React from "react";
-import Color from "color";
+import { useSpring, animated } from "react-spring";
 
 export default function Tile(props) {
   const { tileKey, tileSize, tilepadding, row, col, cell } = props;
@@ -41,3 +41,15 @@ const colors = {
   1024: "#ec3",
   2048: "#ec2"
 };
+
+function AnimatedTile(props) {
+  const style = useSpring({
+    from: { left: "0px", top: "0px" },
+    to: { left: "300px", top: "300px" }
+  });
+  return (
+    <animated.div className="tile" style={style}>
+      <div className="value">10</div>
+    </animated.div>
+  );
+}

@@ -1,5 +1,5 @@
 import React from "react";
-
+import { useSpring, animated } from "react-spring";
 import Tile from "./Tile";
 
 export default function Board(props) {
@@ -28,7 +28,30 @@ export default function Board(props) {
             />
           ))
         )}
+        <AnimatedTile />
       </div>
     </div>
+  );
+}
+
+function AnimatedTile(props) {
+  const style = useSpring({
+    from: { left: "0px", top: "0px" },
+    to: { left: "300px", top: "300px" }
+  });
+  return (
+    <animated.div
+      className="tile"
+      style={{
+        ...style,
+        margin: "5px",
+        width: "100px",
+        height: "100px"
+      }}
+    >
+      <div className="value" style={{ backgroundColor: "red" }}>
+        10
+      </div>
+    </animated.div>
   );
 }
