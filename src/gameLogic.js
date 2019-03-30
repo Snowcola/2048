@@ -1,10 +1,10 @@
-import equal from "fast-deep-equal";
-import Cell from "./cell";
-import { clone } from "./utils";
+import equal from 'fast-deep-equal';
+import Cell from './cell';
+import { clone } from './utils';
 
 export function addRandom(matrix, newGame = false, CHANCE_OF_FOUR = 0.08) {
   let empty_cells = [];
-  const newGrid = matrix.map(row => row.map(col => col));
+  const newGrid = matrix.map((row) => row.map((col) => col));
   newGrid.forEach((row, rowIndex) => {
     row.forEach((col, colIndex) => {
       if (col === 0) {
@@ -21,19 +21,19 @@ export function addRandom(matrix, newGame = false, CHANCE_OF_FOUR = 0.08) {
       row: row,
       col: col,
       oldCol: col,
-      oldRow: row
+      oldRow: row,
     });
 
     return newGrid;
   } else {
-    console.log("grid full");
+    console.log('grid full');
     return matrix;
   }
 }
 
 export function moveLeft(matrix) {
   const newGrid = matrix.map((row, rowIndex) => {
-    let new_vals = row.filter(cell => cell !== 0);
+    let new_vals = row.filter((cell) => cell !== 0);
 
     new_vals = mergeLeft(new_vals);
 
@@ -43,18 +43,22 @@ export function moveLeft(matrix) {
     return new_vals;
   });
 
-  if (!equal(newGrid, matrix)) {
+  if (!equal(valueArray(newGrid), valueArray(matrix))) {
     //add random
-    console.log("map change add random");
+    console.log('map change add random');
     return addRandom(newGrid);
   } else {
-    console.log("no map change");
+    console.log('no map change');
     return newGrid;
   }
 }
 
+function valueArray(arr) {
+  return arr.map((row) => row.map((cell) => cell.value));
+}
+
 function mergeLeft(row) {
-  let new_vals = [...row.map(x => clone(x))];
+  let new_vals = [...row.map((x) => clone(x))];
   let merged_vals = [];
 
   for (let i = 0; i < row.length; ++i) {
@@ -73,7 +77,7 @@ function mergeLeft(row) {
         ...test_cell,
         value: test_cell.value + cell2.value,
         merged: true,
-        newTile: false
+        newTile: false,
       });
       merged_cell.newTile = false;
       console.log(merged_cell);

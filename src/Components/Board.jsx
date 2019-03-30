@@ -1,32 +1,41 @@
-import React from "react";
-import { useSpring, animated } from "react-spring";
-import Tile from "./Tile";
+import React from 'react';
+import { useSpring, animated } from 'react-spring';
+import Tile, { BlankTile } from './Tile';
 
 export default function Board(props) {
   const { grid, tileSize, size, tilepadding } = props;
   return (
-    <div className='container'>
+    <div className="container">
       <div
-        className='board'
+        className="board"
         style={{
-          position: "relative",
+          position: 'relative',
           width: tileSize * size + tilepadding * 2,
-          height: tileSize * size + tilepadding * 2
+          height: tileSize * size + tilepadding * 2,
           //backgroundColor: 'silver',
         }}
       >
         {grid.map((row, r) =>
-          row.map((cell, c) => (
-            <AnimatedTile
-              key={r + c * Date.now() + 200}
-              tileKey={r + c * Date.now()}
-              tileSize={tileSize}
-              tilepadding={tilepadding}
-              row={r}
-              col={c}
-              cell={cell}
-            />
-          ))
+          row.map((cell, c) =>
+            cell !== 0 ? (
+              <AnimatedTile
+                key={cell.key}
+                tileKey={cell.key}
+                tileSize={tileSize}
+                tilepadding={tilepadding}
+                row={r}
+                col={c}
+                cell={cell}
+              />
+            ) : (
+              <BlankTile
+                tileSize={tileSize}
+                tilepadding={tilepadding}
+                row={r}
+                col={c}
+              />
+            )
+          )
         )}
       </div>
     </div>
@@ -38,24 +47,24 @@ function AnimatedTile(props) {
   const { row, col, oldRow, oldCol, merged, newTile } = cell;
   const size = props.tileSize;
   const style = useSpring({
-    from: {
-      left: (cell && !merged ? cell.oldCol : props.col) * size + "px",
-      top: (cell && !merged ? cell.oldRow : props.row) * size + "px"
-    },
+    /*  from: {
+      left: (cell && !merged ? cell.oldCol : props.col) * size + 'px',
+      top: (cell && !merged ? cell.oldRow : props.row) * size + 'px',
+    }, */
     to: {
-      left: (cell ? cell.col : props.col) * size + "px",
-      top: (cell ? cell.row : props.row) * size + "px"
-    }
+      left: (cell ? cell.col : props.col) * size + 'px',
+      top: (cell ? cell.row : props.row) * size + 'px',
+    },
   });
 
   return (
     <animated.div
-      className='tile'
+      className="tile"
       style={{
         zIndex: 10,
         ...style,
         width: size,
-        height: size
+        height: size,
       }}
     >
       <Tile {...props} />
