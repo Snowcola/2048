@@ -87,7 +87,7 @@ function mergeLeft(row, setScore) {
       cell2.col = test_cell.col;
 
       merged_cell.newTile = false;
-      console.log(merged_cell);
+
       merged_vals.push(merged_cell);
       leftOvers.push(cell2);
     } else if (test_cell) {
