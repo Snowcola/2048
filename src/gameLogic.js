@@ -31,17 +31,20 @@ export function addRandom(matrix, newGame = false, CHANCE_OF_FOUR = 0.08) {
   }
 }
 
-export function moveLeft(matrix) {
+export function moveLeft(matrix, setMergedTiles) {
+  let leftovers = [];
   const newGrid = matrix.map((row, rowIndex) => {
     let new_vals = row.filter((cell) => cell !== 0);
-
-    new_vals = mergeLeft(new_vals);
-
+    let x;
+    [new_vals, x] = mergeLeft(new_vals);
+    leftovers.push(x);
     while (new_vals.length < matrix.length) {
       new_vals.push(0);
     }
     return new_vals;
   });
+
+  setMergedTiles(leftovers);
 
   if (!equal(valueArray(newGrid), valueArray(matrix))) {
     //add random
@@ -60,6 +63,7 @@ function valueArray(arr) {
 function mergeLeft(row) {
   let new_vals = [...row.map((x) => clone(x))];
   let merged_vals = [];
+  let leftOvers = [];
 
   for (let i = 0; i < row.length; ++i) {
     const test_cell = new_vals.shift();
@@ -79,9 +83,15 @@ function mergeLeft(row) {
         merged: true,
         newTile: false,
       });
+      cell2.oldRow = cell2.row;
+      cell2.oldCol = cell2.col;
+      cell2.row = test_cell.row;
+      cell2.col = test_cell.col;
+
       merged_cell.newTile = false;
       console.log(merged_cell);
       merged_vals.push(merged_cell);
+      leftOvers.push(cell2);
 
       //console.log(test_cell ? true : false);
     } else if (test_cell) {
@@ -90,5 +100,5 @@ function mergeLeft(row) {
   }
 
   //merged_vals.map((cell) => new_vals.unshift(cell));
-  return [...merged_vals];
+  return [[...merged_vals], leftOvers];
 }

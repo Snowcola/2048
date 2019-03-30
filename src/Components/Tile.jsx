@@ -40,18 +40,6 @@ const colors = {
   2048: '#ec2',
 };
 
-function AnimatedTile(props) {
-  const style = useSpring({
-    from: { left: '0px', top: '0px' },
-    to: { left: '300px', top: '300px' },
-  });
-  return (
-    <animated.div className="tile" style={style}>
-      <div className="value">10</div>
-    </animated.div>
-  );
-}
-
 export function BlankTile({ tileSize, tilepadding, row, col }) {
   return (
     <div
@@ -62,6 +50,7 @@ export function BlankTile({ tileSize, tilepadding, row, col }) {
         width: tileSize,
         height: tileSize,
         margin: `${tilepadding}px`,
+        zIndex: 2,
       }}
     >
       <div
