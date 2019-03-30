@@ -1,10 +1,10 @@
-import equal from 'fast-deep-equal';
-import Cell from './cell';
-import { clone } from './utils';
+import equal from "fast-deep-equal";
+import Cell from "./cell";
+import { clone } from "./utils";
 
 export function addRandom(matrix, newGame = false, CHANCE_OF_FOUR = 0.08) {
   let empty_cells = [];
-  const newGrid = matrix.map((row) => row.map((col) => col));
+  const newGrid = matrix.map(row => row.map(col => col));
   newGrid.forEach((row, rowIndex) => {
     row.forEach((col, colIndex) => {
       if (col === 0) {
@@ -21,22 +21,22 @@ export function addRandom(matrix, newGame = false, CHANCE_OF_FOUR = 0.08) {
       row: row,
       col: col,
       oldCol: col,
-      oldRow: row,
+      oldRow: row
     });
 
     return newGrid;
   } else {
-    console.log('grid full');
+    console.log("grid full");
     return matrix;
   }
 }
 
-export function moveLeft(matrix, setMergedTiles) {
+export function moveLeft(matrix, setMergedTiles, setScore) {
   let leftovers = [];
   const newGrid = matrix.map((row, rowIndex) => {
-    let new_vals = row.filter((cell) => cell !== 0);
+    let new_vals = row.filter(cell => cell !== 0);
     let x;
-    [new_vals, x] = mergeLeft(new_vals);
+    [new_vals, x] = mergeLeft(new_vals, setScore);
     leftovers.push(x);
     while (new_vals.length < matrix.length) {
       new_vals.push(0);
@@ -47,24 +47,21 @@ export function moveLeft(matrix, setMergedTiles) {
   setMergedTiles(leftovers);
 
   if (!equal(valueArray(newGrid), valueArray(matrix))) {
-    //add random
-    console.log('map change add random');
     return addRandom(newGrid);
   } else {
-    console.log('no map change');
     return newGrid;
   }
 }
 
-function valueArray(arr) {
-  return arr.map((row) => row.map((cell) => cell.value));
+export function valueArray(arr) {
+  return arr.map(row => row.map(cell => cell.value));
 }
 
-function mergeLeft(row) {
-  let new_vals = [...row.map((x) => clone(x))];
+function mergeLeft(row, setScore) {
+  let new_vals = [...row.map(x => clone(x))];
   let merged_vals = [];
   let leftOvers = [];
-
+  let score = 0;
   for (let i = 0; i < row.length; ++i) {
     const test_cell = new_vals.shift();
     if (test_cell) {
@@ -77,11 +74,12 @@ function mergeLeft(row) {
       test_cell.value === new_vals[0].value
     ) {
       let cell2 = new_vals.shift();
+      score += test_cell.value + cell2.value;
       const merged_cell = new Cell({
         ...test_cell,
-        value: test_cell.value + cell2.value,
+        value: score,
         merged: true,
-        newTile: false,
+        newTile: false
       });
       cell2.oldRow = cell2.row;
       cell2.oldCol = cell2.col;
@@ -92,13 +90,11 @@ function mergeLeft(row) {
       console.log(merged_cell);
       merged_vals.push(merged_cell);
       leftOvers.push(cell2);
-
-      //console.log(test_cell ? true : false);
     } else if (test_cell) {
       merged_vals.push(test_cell);
     }
   }
+  setScore(score);
 
-  //merged_vals.map((cell) => new_vals.unshift(cell));
   return [[...merged_vals], leftOvers];
 }
