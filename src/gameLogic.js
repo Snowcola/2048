@@ -74,7 +74,7 @@ function mergeLeft(row, setScore) {
       test_cell.value === new_vals[0].value
     ) {
       let cell2 = new_vals.shift();
-      score += test_cell.value + cell2.value;
+      score += test_cell.value * 2;
       const merged_cell = new Cell({
         ...test_cell,
         value: score,

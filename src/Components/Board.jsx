@@ -82,3 +82,5 @@ function AnimatedTile(props) {
     </animated.div>
   );
 }
+
+function Test() {}
