@@ -1,6 +1,6 @@
-import React from 'react';
-import { useSpring, animated } from 'react-spring';
-import Tile, { BlankTile } from './Tile';
+import React from "react";
+import { useSpring, animated } from "react-spring";
+import Tile, { BlankTile } from "./Tile";
 
 export default function Board(props) {
   const { grid, tileSize, size, tilepadding, ui_grid } = props;
@@ -9,10 +9,9 @@ export default function Board(props) {
       <div
         className="board"
         style={{
-          position: 'relative',
+          position: "relative",
           width: tileSize * size + tilepadding * 2,
-          height: tileSize * size + tilepadding * 2,
-          //backgroundColor: 'silver',
+          height: tileSize * size + tilepadding * 2
         }}
       >
         {grid.map((row, r) =>
@@ -57,16 +56,16 @@ function AnimatedTile(props) {
     from: newTile
       ? { scale: 0.1, opacity: 0 }
       : {
-          left: (!merged ? oldCol : props.col) * size + 'px',
-          top: (!merged ? oldRow : props.row) * size + 'px',
-          scale: 0,
+          left: (!merged ? oldCol : props.col) * size + "px",
+          top: (!merged ? oldRow : props.row) * size + "px",
+          scale: 0
         },
     to: {
-      left: (cell ? col : props.col) * size + 'px',
-      top: (cell ? row : props.row) * size + 'px',
+      left: (cell ? col : props.col) * size + "px",
+      top: (cell ? row : props.row) * size + "px",
       scale: 0,
-      opacity: 1,
-    },
+      opacity: 1
+    }
   });
 
   return (
@@ -76,7 +75,7 @@ function AnimatedTile(props) {
         zIndex: z,
         ...style,
         width: size,
-        height: size,
+        height: size
       }}
     >
       <Tile {...props} />
